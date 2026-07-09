@@ -1,0 +1,253 @@
+/* ==========================================================================
+   Bloom English - Work Detail Page Stylesheet
+   Loaded together with css/style.css (shared variables, reset, buttons,
+   section-header, tools-list, support-grid, fade-in).
+   This page presents Bloom English as a Canva LP design work (case study),
+   not as a functioning landing page - so layout stays in the portfolio's
+   own card/section language rather than a separate "product LP" look.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   0. Header (back link + work name)
+   -------------------------------------------------------------------------- */
+.lp-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248, 247, 243, 0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(15, 42, 68, 0.06);
+}
+
+.lp-header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.lp-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-main);
+}
+
+.lp-back-link::before {
+  content: '\2190'; /* left arrow */
+}
+
+.lp-header-logo {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   1. 作品概要 (overview banner)
+   -------------------------------------------------------------------------- */
+.work-detail-hero {
+  padding-top: 64px;
+}
+
+.work-detail-title {
+  margin-top: 12px;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  color: var(--color-main);
+  line-height: 1.4;
+}
+
+.work-detail-category {
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.work-detail-summary {
+  margin-top: 20px;
+  max-width: 720px;
+  font-size: 16px;
+  color: var(--color-muted);
+}
+
+/* --------------------------------------------------------------------------
+   2. 制作内容 (bullet list)
+   -------------------------------------------------------------------------- */
+.work-detail-list {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.work-detail-list li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 16px;
+  color: var(--color-text);
+}
+
+.work-detail-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+}
+
+/* --------------------------------------------------------------------------
+   3. Clickable design images (used by both the single full-LP image and
+      the section-by-section gallery below). Click opens the lightbox
+      (see initLightbox in js/script.js).
+   -------------------------------------------------------------------------- */
+.lp-gallery-item {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: zoom-in;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.lp-gallery-item:hover,
+.lp-gallery-item:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 48px rgba(15, 42, 68, 0.14);
+}
+
+.lp-gallery-item img {
+  width: 100%;
+  height: auto; /* override width/height HTML attributes so no forced aspect-ratio conflict */
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   4. 完成イメージ (single large full-page image)
+   -------------------------------------------------------------------------- */
+.work-image-frame {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* --------------------------------------------------------------------------
+   5. 制作ポイント
+   Reuses .support-grid / .support-card / .support-number from style.css
+   (no extra CSS needed here - keeps this page visually consistent with
+   the "What I Can Support" section on the portfolio top page).
+   -------------------------------------------------------------------------- */
+
+/* --------------------------------------------------------------------------
+   6. セクション別デザイン (captioned thumbnail grid)
+   -------------------------------------------------------------------------- */
+.work-gallery-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 32px;
+}
+
+.work-gallery-item {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.work-gallery-item figcaption {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-main);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   7. Footer
+   -------------------------------------------------------------------------- */
+.lp-footer {
+  text-align: center;
+  padding: 40px 24px 56px;
+}
+
+.lp-footer-note {
+  font-size: 13px;
+  color: var(--color-muted);
+  margin-bottom: 16px;
+}
+
+.lp-footer-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.lp-footer-back::before {
+  content: '\2190';
+}
+
+/* --------------------------------------------------------------------------
+   8. Lightbox (enlarged design image)
+   -------------------------------------------------------------------------- */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: rgba(15, 42, 68, 0.85);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-soft);
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-white);
+  color: var(--color-main);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.lightbox-close:hover {
+  background: var(--color-accent);
+  color: var(--color-white);
+}
