@@ -104,6 +104,31 @@ h1, h2, h3, p {
   padding: var(--section-padding-y) 0;
 }
 
+/* Forces a line break on PC only; mobile ignores it and wraps naturally. */
+.break-pc {
+  display: none;
+}
+
+@media (min-width: 769px) {
+  .break-pc {
+    display: inline;
+  }
+}
+
+/* Keeps a short phrase together so it never wraps mid-word. */
+.nowrap {
+  white-space: nowrap;
+}
+
+/* Same as .nowrap, but PC only - for phrases that need protecting on a
+   wide desktop line but would otherwise strand a short orphan fragment
+   when that same line rewraps at mobile widths. */
+@media (min-width: 769px) {
+  .nowrap-pc {
+    white-space: nowrap;
+  }
+}
+
 @media (max-width: 768px) {
   .section {
     padding: var(--section-padding-y-sp) 0;
@@ -211,12 +236,27 @@ h1, h2, h3, p {
 }
 
 .logo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.logo-name {
   font-size: 18px;
   font-weight: 700;
   color: var(--color-main);
   letter-spacing: 0.02em;
-  white-space: nowrap;
-  flex-shrink: 0;
+}
+
+.logo-role {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6B7280;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  margin-top: 2px;
 }
 
 .main-nav {
@@ -367,6 +407,14 @@ section[id] {
   gap: 16px;
 }
 
+@media (min-width: 901px) {
+  .about-cards {
+    position: relative;
+    left: 24px;
+    align-self: center;
+  }
+}
+
 .about-card {
   background: var(--color-sub);
   border-radius: var(--radius-sm);
@@ -391,6 +439,12 @@ section[id] {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
+}
+
+@media (min-width: 901px) {
+  .support-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .support-card {
@@ -428,6 +482,12 @@ section[id] {
 /* --------------------------------------------------------------------------
    9. AI & Tools
    -------------------------------------------------------------------------- */
+/* Wider than the shared 720px so the title's intended PC line break
+   (see .break-pc in the markup) lands where it's meant to, not earlier. */
+#tools .section-header {
+  max-width: 820px;
+}
+
 /* Groups (AI・生成AI / デザイン・動画 / 開発) stack vertically so an
    uneven number of tools per group never looks lopsided. */
 .tools-groups {
@@ -436,7 +496,9 @@ section[id] {
   gap: 40px;
 }
 
-.tools-group-label {
+/* Shared small uppercase label used above any grouped set of items
+   (AI & Tools sub-groups, Works genre groups, ...). */
+.group-label {
   text-align: center;
   font-size: 13px;
   font-weight: 700;
@@ -473,6 +535,21 @@ section[id] {
 /* --------------------------------------------------------------------------
    10. Works
    -------------------------------------------------------------------------- */
+/* Works is split into genre groups (LP Design / Short Videos) so a group
+   with a single item never gets left with an oversized card, and so a
+   new genre can be added later without reshuffling existing ones. */
+.works-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+@media (max-width: 768px) {
+  .works-groups {
+    gap: 48px;
+  }
+}
+
 .works-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -483,6 +560,23 @@ section[id] {
   align-items: start;
 }
 
+/* A group with a single card (currently: LP Design) has no second/third
+   item to fill the row, so the grid's lone track expands and leaves the
+   card stranded on the left. Centering it (card size/design untouched -
+   only its position within the row changes) keeps the section's left/right
+   whitespace balanced instead of lopsided. */
+.works-grid--center {
+  display: flex;
+  justify-content: center;
+}
+
+/* Short Videos cards share the same 9:16 media ratio, so unlike the mixed
+   LP/video pairing above, stretching them to a shared row height (instead
+   of each sizing to its own description length) keeps the row aligned. */
+.works-grid:not(.works-grid--center) {
+  align-items: stretch;
+}
+
 .work-card {
   background: var(--color-white);
   border-radius: var(--radius-lg);
@@ -491,6 +585,10 @@ section[id] {
   display: flex;
   flex-direction: column;
   transition: transform var(--transition-base), box-shadow var(--transition-base);
+  /* Caps the card at the width it would have in a 3-up row, so a genre
+     group with only one work (e.g. LP Design) never stretches its card
+     full-width when the grid's other tracks collapse. */
+  max-width: 380px;
 }
 
 .work-card:hover {
@@ -550,11 +648,25 @@ section[id] {
   flex: 1;
 }
 
+/* In the stretched Short Videos row, keep desc+tags grouped right under
+   each other instead of the desc stretching to push tags to the card's
+   bottom edge; the equalized extra height collects below the tags instead. */
+.works-grid:not(.works-grid--center) .work-desc {
+  flex: none;
+}
+
 .work-tools {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin: 16px 0;
+}
+
+/* LP Design's lone card sits in a centered flex track, not a grid row shared
+   with siblings, so its short tag list reads better centered too instead of
+   pinned to the left with empty space trailing it. */
+.works-grid--center .work-tools {
+  justify-content: center;
 }
 
 .work-tools span {

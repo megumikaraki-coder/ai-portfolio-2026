@@ -76,6 +76,14 @@
 }
 
 /* --------------------------------------------------------------------------
+   2b. 使用ツール heading is a full sentence, wider than the shared
+   720px .section-header max-width allows without breaking mid-phrase.
+   -------------------------------------------------------------------------- */
+#work-tools .section-header {
+  max-width: 1040px;
+}
+
+/* --------------------------------------------------------------------------
    2. 制作内容 (bullet list)
    -------------------------------------------------------------------------- */
 .work-detail-list {
@@ -105,9 +113,8 @@
 }
 
 /* --------------------------------------------------------------------------
-   3. Clickable design images (used by both the single full-LP image and
-      the section-by-section gallery below). Click opens the lightbox
-      (see initLightbox in js/script.js).
+   3. Clickable design images (section-by-section gallery below). Click
+      opens the lightbox (see initLightbox in js/script.js).
    -------------------------------------------------------------------------- */
 .lp-gallery-item {
   display: block;
@@ -135,11 +142,21 @@
 }
 
 /* --------------------------------------------------------------------------
-   4. 完成イメージ (single large full-page image)
+   4. 完成イメージ (single large full-page image, not clickable - already
+      large enough to read in place via vertical scroll)
    -------------------------------------------------------------------------- */
 .work-image-frame {
   max-width: 960px;
   margin: 0 auto;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.work-image-frame img {
+  width: 100%;
+  height: auto; /* override width/height HTML attributes so no forced aspect-ratio conflict */
+  display: block;
 }
 
 /* --------------------------------------------------------------------------
